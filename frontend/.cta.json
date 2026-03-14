@@ -1,0 +1,15 @@
+{
+  "framework": "react",
+  "typescript": true,
+  "projectName": "cemas-fe",
+  "mode": "file-router",
+  "tailwind": true,
+  "packageManager": "bun",
+  "toolchain": "eslint+prettier",
+  "variableValues": {},
+  "git": true,
+  "version": 1,
+  "existingAddOns": [
+    "shadcn"
+  ]
+}

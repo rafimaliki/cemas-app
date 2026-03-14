@@ -1,0 +1,31 @@
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  IMAGE_TAG: $DOCKER_USERNAME/if3250_k03_g02_if-04:$CI_COMMIT_REF_SLUG
+
+image: docker:24.0.5
+
+services:
+  - name: docker:24.0.5-dind
+    alias: docker
+
+stages:
+  - build
+  - push
+
+build_image:
+  stage: build
+  script:
+    - sleep 1
+    - docker build -f Dockerfile.dev -t $IMAGE_TAG .
+    - echo "Build berhasil untuk tag $IMAGE_TAG"
+
+push_image:
+  stage: push
+  script:
+    - sleep 1
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build -f Dockerfile.dev -t $IMAGE_TAG .
+    - echo "Pushing image $IMAGE_TAG ke Docker Hub"
+    - docker push $IMAGE_TAG
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "development" || $CI_COMMIT_BRANCH == "main"'
